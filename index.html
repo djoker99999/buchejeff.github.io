@@ -134,10 +134,6 @@
       filter: drop-shadow(0 0 15px rgba(218, 112, 214, 0.7)) brightness(1.1);
     }
 
-    .log.easy {
-      filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.7)) brightness(1.1);
-    }
-
     .log.medium {
       filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) brightness(1.1) hue-rotate(15deg);
     }
@@ -564,18 +560,6 @@
       background: linear-gradient(45deg, #DDA0DD, #DA70D6);
     }
 
-    .difficulty-btn.easy {
-      background: linear-gradient(45deg, #4CAF50, #8BC34A);
-    }
-
-    .difficulty-btn.medium {
-      background: linear-gradient(45deg, #FF9800, #FFC107);
-    }
-
-    .difficulty-btn.hard {
-      background: linear-gradient(45deg, #F44336, #E91E63);
-    }
-
     .difficulty-btn.active {
       border-color: white;
       box-shadow: 0 0 10px rgba(255,255,255,0.5);
@@ -628,8 +612,8 @@
       }
       
       .difficulty-selector {
-        flex-wrap: wrap;
-        gap: 5px;
+        justify-content: center;
+        gap: 10px;
       }
       
       .difficulty-btn {
@@ -697,18 +681,6 @@
     .difficulty-badge.buchette {
       background: linear-gradient(45deg, #DDA0DD, #DA70D6);
     }
-
-    .difficulty-badge.easy {
-      background: linear-gradient(45deg, #4CAF50, #8BC34A);
-    }
-
-    .difficulty-badge.medium {
-      background: linear-gradient(45deg, #FF9800, #FFC107);
-    }
-
-    .difficulty-badge.hard {
-      background: linear-gradient(45deg, #F44336, #E91E63);
-    }
   </style>
 </head>
 <body>
@@ -720,9 +692,6 @@
     <div class="difficulty-selector">
       <div class="difficulty-btn noob active" data-difficulty="noob">Noob</div>
       <div class="difficulty-btn buchette" data-difficulty="buchette">Buchette</div>
-      <div class="difficulty-btn easy" data-difficulty="easy">Facile</div>
-      <div class="difficulty-btn medium" data-difficulty="medium">Moyen</div>
-      <div class="difficulty-btn hard" data-difficulty="hard">Difficile</div>
     </div>
     
     <div class="log-container">
@@ -1052,9 +1021,6 @@
           switch(currentDifficulty) {
             case "noob": difficultyName = "noob"; break;
             case "buchette": difficultyName = "buchette"; break;
-            case "easy": difficultyName = "facile"; break;
-            case "medium": difficultyName = "moyenne"; break;
-            case "hard": difficultyName = "difficile"; break;
           }
           message.textContent = `Bûche magique ${difficultyName} - À tout moment la bûche peut se briser...`;
         }
@@ -1077,27 +1043,9 @@
           break;
         case "buchette":
           recompense = 1; // Galaxie
-          rewardText = "galaxie mystérieuse ! 🌌";
+          rewardText = "vous avez gagnez une galaxie !";
           victoryText = "Incroyable ! Tu as découvert une galaxie entière !";
-          rewardImg = "";
-          break;
-        case "easy":
-          recompense = 1; // Écureuil
-          rewardText = "écureuil de la forêt !";
-          victoryText = "Félicitations ! Tu as découvert un ami de la forêt !";
-          rewardImg = "https://images.unsplash.com/photo-1544725175-1bed2b99bb32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80";
-          break;
-        case "medium":
-          recompense = 10000; // Cerf majestueux
-          rewardText = "cerf majestueux !";
-          victoryText = "Incroyable ! Tu as trouvé le gardien de la forêt !";
-          rewardImg = "https://images.unsplash.com/photo-1551969014-7d2c4cddf0b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1926&q=80";
-          break;
-        case "hard":
-          recompense = 30000; // Ours brun
-          rewardText = "ours brun légendaire !";
-          victoryText = "Victoire totale ! Tu as dompté le maître de la forêt !";
-          rewardImg = "https://images.unsplash.com/photo-1446329813274-7c9036bd9a1f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+          rewardImg = "https://i.ibb.co/JMPfpWV/IMG-5851.png";
           break;
       }
       
@@ -1161,15 +1109,6 @@
         case "buchette":
           maxHP = 5000;
           break;
-        case "easy":
-          maxHP = 50000;
-          break;
-        case "medium":
-          maxHP = 100000;
-          break;
-        case "hard":
-          maxHP = 200000;
-          break;
       }
       
       currentHP = maxHP;
@@ -1188,9 +1127,6 @@
       switch(currentDifficulty) {
         case "noob": difficultyName = "noob"; break;
         case "buchette": difficultyName = "buchette"; break;
-        case "easy": difficultyName = "facile"; break;
-        case "medium": difficultyName = "moyenne"; break;
-        case "hard": difficultyName = "difficile"; break;
       }
       
       message.textContent = `Bûche magique ${difficultyName} - À tout moment la bûche peut se briser...`;
@@ -1264,18 +1200,6 @@
         case 'b':
         case 'B':
           setDifficulty('buchette');
-          break;
-        case 'e':
-        case 'E':
-          setDifficulty('easy');
-          break;
-        case 'm':
-        case 'M':
-          setDifficulty('medium');
-          break;
-        case 'd':
-        case 'D':
-          setDifficulty('hard');
           break;
       }
     });
