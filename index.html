@@ -455,13 +455,20 @@
     }
 
     .result-box {
-      background: linear-gradient(135deg, rgba(139, 69, 19, 0.9), rgba(210, 105, 30, 0.9));
-      padding: 15px;
-      border-radius: 15px;
-      margin: 15px 0;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
+      background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(210, 105, 30, 0.95));
+      padding: 20px;
+      border-radius: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(15px);
       animation: fadeInUp 0.5s ease;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
     }
 
     @keyframes fadeInUp {
