@@ -22,8 +22,8 @@ padding: 10px;
 position: relative;
 overflow-x: hidden;
 display: flex;
-justify-content: flex-start; /* Changé de center à flex-start */
-align-items: center; /* Centrage vertical */
+justify-content: flex-start;
+align-items: center;
 }
 
 body::before {
@@ -44,7 +44,7 @@ filter: brightness(1.1) contrast(1.1);
 .game-container {
 max-width: 500px;
 width: 100%;
-margin: 0 20px; /* Changé pour décaler du bord gauche */
+margin: 0 20px;
 background: rgba(0, 0, 0, 0.7);
 border-radius: 20px;
 padding: 20px;
@@ -139,15 +139,6 @@ filter: drop-shadow(0 0 15px rgba(218, 112, 214, 0.7)) brightness(1.1);
 
 .log.easy {
 filter: drop-shadow(0 0 15px rgba(0, 255, 0, 0.7)) brightness(1.1);
-}
-
-.log.medium {
-filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)) brightness(1.1) hue-rotate(15deg);
-}
-
-.log.hard {
-filter: drop-shadow(0 0 25px rgba(255, 0, 0, 0.8)) brightness(1.1) hue-rotate(330deg);
-animation: redGlow 2s ease-in-out infinite alternate;
 }
 
 .log.medium {
@@ -328,7 +319,6 @@ filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
 100% { opacity: 0; transform: scale(1) translateY(-30px); }
 }
 
-/* Styles pour la hache */
 .axe {
 position: absolute;
 width: 80px;
@@ -374,34 +364,53 @@ transform: translate(-50%, -100%) rotate(0deg) scale(0.8);
 .attack-modes {
 display: flex;
 justify-content: center;
-gap: 5px;
+gap: 12px;
 margin: 15px 0;
 flex-wrap: wrap;
 }
 
-.attack-mode-btn {
-padding: 6px 10px;
-font-size: 12px;
+.attack-mode-image {
+width: 110px;
+height: 110px;
 cursor: pointer;
 border: 2px solid rgba(255, 255, 255, 0.3);
 border-radius: 15px;
 background: rgba(255, 255, 255, 0.1);
-color: #fff;
 transition: all 0.3s ease;
 backdrop-filter: blur(5px);
-min-width: 45px;
-font-weight: bold;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 10px;
+position: relative;
 }
 
-.attack-mode-btn:hover {
+.attack-mode-image:hover {
 background: rgba(255, 255, 255, 0.2);
-transform: translateY(-2px);
+transform: translateY(-3px);
 }
 
-.attack-mode-btn.active {
-background: linear-gradient(45deg, #8B4513, #D2691E);
+.attack-mode-image.active {
 border-color: #fff;
-box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+background: rgba(255, 255, 255, 0.3);
+transform: scale(1.05);
+}
+
+.attack-mode-image img {
+width: 65px;
+height: 65px;
+object-fit: contain;
+filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.attack-mode-label {
+font-size: 13px;
+margin-top: 5px;
+font-weight: bold;
+color: #D2691E;
+text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
 .controls {
@@ -450,32 +459,97 @@ text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 min-height: 25px;
 }
 
-.result-box {
-background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(210, 105, 30, 0.95));
-padding: 20px;
-border-radius: 20px;
-border: 3px solid rgba(255, 255, 255, 0.8);
-backdrop-filter: blur(15px);
-animation: fadeInUp 0.5s ease;
+.popup-overlay {
 position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7);
+display: flex;
+justify-content: center;
+align-items: center;
 z-index: 1000;
-width: 90%;
-max-width: 400px;
-box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
 }
 
-@keyframes fadeInUp {
-from {
-opacity: 0;
-transform: translateY(20px);
-}
-to {
+.popup-overlay.active {
 opacity: 1;
-transform: translateY(0);
+visibility: visible;
 }
+
+.popup-content {
+background: linear-gradient(135deg, rgba(139, 69, 19, 0.95), rgba(210, 105, 30, 0.95));
+padding: 25px;
+border-radius: 20px;
+max-width: 450px;
+width: 90%;
+text-align: center;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+border: 3px solid rgba(255, 255, 255, 0.5);
+backdrop-filter: blur(10px);
+transform: scale(0.7);
+transition: transform 0.4s ease;
+}
+
+.popup-overlay.active .popup-content {
+transform: scale(1);
+}
+
+.popup-content h3 {
+font-size: 1.8em;
+margin-bottom: 15px;
+color: #fff;
+text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.popup-reward-image {
+width: 140px;
+height: 140px;
+margin: 15px auto;
+background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+border-radius: 10px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.popup-reward-text {
+font-size: 1.3em;
+margin: 15px 0;
+color: #fff;
+font-weight: bold;
+text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.popup-victory-message {
+font-size: 1.4em;
+margin: 15px 0;
+color: #feca57;
+text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+font-weight: bold;
+}
+
+.popup-close-btn {
+padding: 10px 25px;
+font-size: 16px;
+cursor: pointer;
+border: none;
+border-radius: 20px;
+background: linear-gradient(45deg, #8B4513, #654321);
+color: #fff;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+font-weight: bold;
+margin-top: 15px;
+}
+
+.popup-close-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+background: linear-gradient(45deg, #D2691E, #8B4513);
 }
 
 .hidden {
@@ -526,66 +600,76 @@ box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 border: 2px solid rgba(255,255,255,0.2);
 }
 
-.reward-image {
-width: 120px;
-height: 120px;
-margin: 10px auto;
-background-size: contain;
-background-repeat: no-repeat;
-background-position: center;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
 .difficulty-selector {
 display: flex;
 justify-content: center;
-gap: 10px;
+gap: 15px;
 margin: 15px 0;
 }
 
 .difficulty-btn {
-padding: 8px 15px;
+width: 80px;
+height: 80px;
 border-radius: 15px;
-font-weight: bold;
 cursor: pointer;
 transition: all 0.3s ease;
-border: 2px solid transparent;
-font-size: 14px;
+border: 3px solid rgba(255, 255, 255, 0.3);
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+position: relative;
+overflow: hidden;
+}
+
+.difficulty-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.2);
+transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover::before {
+background: rgba(0, 0, 0, 0.1);
 }
 
 .difficulty-btn.noob {
-background: linear-gradient(45deg, #87CEEB, #B0E0E6);
-color: #000;
+background-image: url('https://i.ibb.co/gFMBxFzP/IMG-6063.png');
 }
 
 .difficulty-btn.buchette {
-background: linear-gradient(45deg, #DDA0DD, #DA70D6);
+background-image: url('https://i.ibb.co/JMPfpWV/IMG-5851.png');
 }
 
 .difficulty-btn.easy {
-background: linear-gradient(45deg, #4CAF50, #8BC34A);
+background-image: url('https://i.ibb.co/p6s7HT5n/IMG-7322.png');
 }
 
 .difficulty-btn.medium {
-background: linear-gradient(45deg, #FF9800, #FFC107);
+background-image: url('https://i.ibb.co/hxXnkQh7/IMG-5861.png');
 }
 
 .difficulty-btn.hard {
-background: linear-gradient(45deg, #F44336, #E91E63);
+background-image: url('https://i.ibb.co/DHBNtX7t/IMG-6573.png');
 }
 
 .difficulty-btn.active {
-border-color: white;
-box-shadow: 0 0 10px rgba(255,255,255,0.5);
-transform: scale(1.05);
+border-color: #D2691E;
+box-shadow: 0 0 20px rgba(210, 105, 30, 0.8);
+transform: scale(1.1);
 }
 
-/* Styles pour mobile */
+.difficulty-btn.active::before {
+background: rgba(210, 105, 30, 0.2);
+}
+
 @media (max-width: 480px) {
 body {
 padding: 5px;
-justify-content: center; /* Sur mobile, on centre pour une meilleure expérience */
+justify-content: center;
 }
 
 .game-container {
@@ -616,13 +700,22 @@ font-size: 1em;
 }
 
 .attack-modes {
-gap: 4px;
+gap: 8px;
 }
 
-.attack-mode-btn {
-padding: 5px 8px;
+.attack-mode-image {
+width: 90px;
+height: 90px;
+padding: 8px;
+}
+
+.attack-mode-image img {
+width: 50px;
+height: 50px;
+}
+
+.attack-mode-label {
 font-size: 11px;
-min-width: 40px;
 }
 
 button {
@@ -632,23 +725,37 @@ margin: 5px;
 }
 
 .difficulty-selector {
-justify-content: center;
 gap: 10px;
 }
 
 .difficulty-btn {
-width: 48%;
-padding: 10px;
-margin: 2px 0;
+width: 70px;
+height: 70px;
 }
 
-.reward-image {
-width: 100px;
-height: 100px;
+.popup-content {
+padding: 20px;
+max-width: 90%;
+}
+
+.popup-reward-image {
+width: 120px;
+height: 120px;
+}
+
+.popup-content h3 {
+font-size: 1.5em;
+}
+
+.popup-reward-text {
+font-size: 1.1em;
+}
+
+.popup-victory-message {
+font-size: 1.2em;
 }
 }
 
-/* Effets de particules */
 .particles-container {
 position: absolute;
 top: 0;
@@ -667,22 +774,6 @@ background: #D2691E;
 border-radius: 50%;
 pointer-events: none;
 z-index: 2;
-}
-
-/* Styles améliorés pour la fin du jeu */
-.victory-message {
-font-size: 1.5em;
-font-weight: bold;
-margin: 15px 0;
-color: #D2691E;
-text-shadow: 0 0 10px rgba(210, 105, 30, 0.7);
-}
-
-.reward-text {
-font-size: 1.3em;
-margin: 10px 0;
-color: #fff;
-font-weight: bold;
 }
 
 .difficulty-badge {
@@ -722,11 +813,11 @@ background: linear-gradient(45deg, #F44336, #E91E63);
 <h1>🪓 La Bûche Magique !</h1>
 
 <div class="difficulty-selector">
-<div class="difficulty-btn noob active" data-difficulty="noob">Noob</div>
-<div class="difficulty-btn buchette" data-difficulty="buchette">Buchette</div>
-<div class="difficulty-btn easy" data-difficulty="easy">Facile</div>
-<div class="difficulty-btn medium" data-difficulty="medium">Moyen</div>
-<div class="difficulty-btn hard" data-difficulty="hard">Difficile</div>
+<div class="difficulty-btn noob active" data-difficulty="noob" title="Noob - 1500 HP"></div>
+<div class="difficulty-btn buchette" data-difficulty="buchette" title="Buchette - 5000 HP"></div>
+<div class="difficulty-btn easy" data-difficulty="easy" title="Facile - 15000 HP"></div>
+<div class="difficulty-btn medium" data-difficulty="medium" title="Moyen - 25000 HP"></div>
+<div class="difficulty-btn hard" data-difficulty="hard" title="Difficile - 50000 HP"></div>
 </div>
 
 <div class="log-container">
@@ -740,14 +831,30 @@ background: linear-gradient(45deg, #F44336, #E91E63);
 </div>
 
 <div class="attack-modes">
-<button id="mode1" class="attack-mode-btn active">1</button>
-<button id="mode5" class="attack-mode-btn">5</button>
-<button id="mode10" class="attack-mode-btn">10</button>
-<button id="mode30" class="attack-mode-btn">30</button>
-<button id="mode50" class="attack-mode-btn">50</button>
-<button id="mode100" class="attack-mode-btn">100</button>
-<button id="mode500" class="attack-mode-btn">500</button>
-<button id="mode1000" class="attack-mode-btn">1000</button>
+<div id="mode1" class="attack-mode-image active">
+<img src="https://i.ibb.co/WNXDxn2y/IMG-7354-Photoroom.png" alt="Rose - 1 coup">
+<div class="attack-mode-label">1 coup</div>
+</div>
+<div id="mode10" class="attack-mode-image">
+<img src="https://i.ibb.co/7JsBRrCn/IMG-5885.png" alt="Rosa - 10 coups">
+<div class="attack-mode-label">10 coups</div>
+</div>
+<div id="mode30" class="attack-mode-image">
+<img src="https://i.ibb.co/8DMJ0cxy/IMG-7355-Photoroom.png" alt="Donuts - 30 coups">
+<div class="attack-mode-label">30 coups</div>
+</div>
+<div id="mode100" class="attack-mode-image">
+<img src="https://i.ibb.co/C5M6DHcS/IMG-7356-Photoroom.png" alt="Coeurs - 100 coups">
+<div class="attack-mode-label">100 coups</div>
+</div>
+<div id="mode500" class="attack-mode-image">
+<img src="https://i.ibb.co/nNy17WfL/IMG-6065.png" alt="Mini Gun - 500 coups">
+<div class="attack-mode-label">500 coups</div>
+</div>
+<div id="mode1000" class="attack-mode-image">
+<img src="https://i.ibb.co/JMPfpWV/IMG-5851.png" alt="Galaxie - 1000 coups">
+<div class="attack-mode-label">1000 coups</div>
+</div>
 </div>
 
 <div class="controls">
@@ -756,12 +863,15 @@ background: linear-gradient(45deg, #F44336, #E91E63);
 </div>
 
 <p id="message"></p>
+</div>
 
-<div id="resultContainer" class="hidden result-box">
+<div class="popup-overlay" id="victoryPopup">
+<div class="popup-content">
 <h3>🎉 Bûche Magique Coupée ! 🎉</h3>
-<div id="rewardImage" class="reward-image"></div>
-<p id="coinsResult" class="reward-text"></p>
-<div id="victoryMessage" class="victory-message"></div>
+<div id="popupRewardImage" class="popup-reward-image"></div>
+<p id="popupRewardText" class="popup-reward-text"></p>
+<div id="popupVictoryMessage" class="popup-victory-message"></div>
+<button class="popup-close-btn" id="closePopupBtn">Continuer</button>
 </div>
 </div>
 
@@ -779,17 +889,18 @@ let currentDifficulty = "noob";
 const log = document.getElementById("log");
 const message = document.getElementById("message");
 const attackBtn = document.getElementById("attackBtn");
-const resultContainer = document.getElementById("resultContainer");
-const coinsResult = document.getElementById("coinsResult");
-const victoryMessage = document.getElementById("victoryMessage");
 const gameContainer = document.getElementById("gameContainer");
 const comboIndicator = document.getElementById("comboIndicator");
-const rewardImage = document.getElementById("rewardImage");
 const particlesContainer = document.getElementById("particlesContainer");
+
+const victoryPopup = document.getElementById("victoryPopup");
+const popupRewardImage = document.getElementById("popupRewardImage");
+const popupRewardText = document.getElementById("popupRewardText");
+const popupVictoryMessage = document.getElementById("popupVictoryMessage");
+const closePopupBtn = document.getElementById("closePopupBtn");
 
 const impactEffects = ["💥", "🔥", "⭐", "💫", "✨", "💢", "🪓", "🌲"];
 
-// Système audio
 function initAudioContext() {
 try {
 if (!audioContext) {
@@ -824,7 +935,6 @@ gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration)
 oscillator.start(context.currentTime);
 oscillator.stop(context.currentTime + duration);
 } catch (e) {
-// Silence en cas d'erreur
 }
 }
 
@@ -844,12 +954,10 @@ setTimeout(() => createSound(350, 0.3, 'square'), 100);
 setTimeout(() => createSound(650, 0.2, 'sine'), 200);
 }
 
-// Fonction pour créer une hache animée
 function createAxe() {
 const axe = document.createElement('div');
 axe.className = 'axe';
 
-// Positionner la hache au-dessus de la bûche
 const logRect = log.getBoundingClientRect();
 const containerRect = log.parentElement.getBoundingClientRect();
 
@@ -861,12 +969,10 @@ log.parentElement.appendChild(axe);
 return axe;
 }
 
-// Fonction pour animer la hache
 function animateAxe() {
 const axe = createAxe();
 axe.classList.add('axe-hit');
 
-// Supprimer la hache après l'animation
 setTimeout(() => {
 if (axe.parentElement) {
 axe.parentElement.removeChild(axe);
@@ -874,7 +980,6 @@ axe.parentElement.removeChild(axe);
 }, 600);
 }
 
-// Fonction pour créer des particules d'impact (copeaux de bois)
 function createHitParticles() {
 for (let i = 0; i < 8; i++) {
 const particle = document.createElement('div');
@@ -886,7 +991,6 @@ const containerRect = log.parentElement.getBoundingClientRect();
 particle.style.left = (logRect.left + logRect.width/2 - containerRect.left + (Math.random() * 60 - 30)) + 'px';
 particle.style.top = (logRect.top + logRect.height/2 - containerRect.top + (Math.random() * 60 - 30)) + 'px';
 
-// Couleur des copeaux de bois
 const colors = ['#D2691E', '#8B4513', '#CD853F', '#DEB887'];
 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
 
@@ -939,7 +1043,6 @@ comboIndicator.style.display = 'block';
 }
 }
 
-// Fonction d'attaque
 function attack() {
 if (currentHP <= 0 || isAttacking) return;
 
@@ -950,7 +1053,6 @@ let actualHits = 0;
 let coinsEarned = 0;
 let wasCracked = log.classList.contains('cracked');
 
-// Animer la hache
 animateAxe();
 
 playHitSound();
@@ -990,7 +1092,6 @@ coupCounter++;
 actualHits++;
 totalHits++;
 
-// 1 coup = -1 point de vie
 currentHP--;
 
 hitsUntilCoin--;
@@ -1056,63 +1157,69 @@ message.textContent = `Bûche magique ${difficultyName} - À tout moment la bûc
 }
 }
 
-function endGame() {
-let recompense = 0;
+function showVictoryPopup() {
 let rewardText = "";
 let victoryText = "";
 let rewardImg = "";
 
-// Déterminer la récompense selon la difficulté
 switch(currentDifficulty) {
 case "noob":
-recompense = 300; // 300 pièces
 rewardText = "300 pièces d'or !";
 victoryText = "Bravo ! Tu as gagné tes premières pièces !";
 rewardImg = "https://i.ibb.co/gFMBxFzP/IMG-6063.png";
 break;
 case "buchette":
-recompense = 1; // Galaxie
-rewardText = "vous avez gagnez une galaxie !";
+rewardText = "vous avez gagné une galaxie !";
 victoryText = "Incroyable ! Tu as découvert une galaxie entière !";
 rewardImg = "https://i.ibb.co/JMPfpWV/IMG-5851.png";
 break;
 case "easy":
-recompense = 3000; // 3000 pièces
 rewardText = "Vous avez gagné 3000 pièces !";
 victoryText = "Félicitations ! Tu as remporté un superbe trésor !";
 rewardImg = "https://i.ibb.co/p6s7HT5n/IMG-7322.png";
 break;
 case "medium":
-recompense = 5000; // 5000 pièces
 rewardText = "Vous avez gagné 5000 pièces !";
 victoryText = "Incroyable ! Tu as trouvé un trésor précieux !";
 rewardImg = "https://i.ibb.co/hxXnkQh7/IMG-5861.png";
 break;
 case "hard":
-recompense = 10000; // 10000 pièces
 rewardText = "Vous avez gagné 10000 pièces !";
 victoryText = "Victoire totale ! Tu as remporté le jackpot !";
 rewardImg = "https://i.ibb.co/DHBNtX7t/IMG-6573.png";
 break;
 }
 
-playBreakSound();
+popupRewardImage.style.backgroundImage = `url('${rewardImg}')`;
 
-message.textContent = "💥 Félicitations ! Tu as coupé la bûche magique ! 🪓✨";
-
-setTimeout(() => {
-rewardImage.style.backgroundImage = `url('${rewardImg}')`;
-
-// Message de victoire clair et épuré
-coinsResult.innerHTML = `
+popupRewardText.innerHTML = `
 <div class="difficulty-badge ${currentDifficulty}">NIVEAU ${currentDifficulty.toUpperCase()}</div><br>
 <strong>RÉCOMPENSE :</strong><br>
 ${rewardText}
 `;
 
-victoryMessage.textContent = victoryText;
+popupVictoryMessage.textContent = victoryText;
 
-resultContainer.classList.remove("hidden");
+victoryPopup.style.display = 'flex';
+setTimeout(() => {
+victoryPopup.classList.add('active');
+}, 10);
+}
+
+function closeVictoryPopup() {
+victoryPopup.classList.remove('active');
+setTimeout(() => {
+victoryPopup.style.display = 'none';
+}, 300);
+}
+
+function endGame() {
+playBreakSound();
+
+message.textContent = "💥 Félicitations ! Tu as coupé la bûche magique ! 🪓✨";
+
+setTimeout(() => {
+showVictoryPopup();
 }, 500);
 
 comboIndicator.style.display = "none";
@@ -1121,7 +1228,7 @@ comboIndicator.style.display = "none";
 function setAttackMode(mode) {
 attackMode = mode;
 
-document.querySelectorAll('.attack-mode-btn').forEach(btn => {
+document.querySelectorAll('.attack-mode-image').forEach(btn => {
 btn.classList.remove('active');
 });
 
@@ -1134,21 +1241,17 @@ attackBtn.textContent = `Attaquer (${mode} coup${mode > 1 ? 's' : ''})`;
 function setDifficulty(difficulty) {
 currentDifficulty = difficulty;
 
-// Mettre à jour l'apparence des boutons de difficulté
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
 btn.classList.remove('active');
 });
 document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
 
-// Mettre à jour l'apparence de la bûche
 log.className = "log " + difficulty;
 
-// Réinitialiser le jeu avec la nouvelle difficulté
 initGame();
 }
 
 function initGame() {
-// Définir les points de vie selon la difficulté
 switch(currentDifficulty) {
 case "noob":
 maxHP = 1500;
@@ -1178,7 +1281,6 @@ isAttacking = false;
 
 log.className = "log " + currentDifficulty;
 
-// Message selon la difficulté
 let difficultyName = "";
 switch(currentDifficulty) {
 case "noob": difficultyName = "noob"; break;
@@ -1190,31 +1292,34 @@ case "hard": difficultyName = "difficile"; break;
 
 message.textContent = `Bûche magique ${difficultyName} - À tout moment la bûche peut se briser...`;
 
-resultContainer.classList.add("hidden");
+closeVictoryPopup();
 comboIndicator.style.display = "none";
 }
 
-// Événements
 document.getElementById("attackBtn").addEventListener("click", attack);
 document.getElementById("resetBtn").addEventListener("click", initGame);
 
 document.getElementById("mode1").addEventListener("click", () => setAttackMode(1));
-document.getElementById("mode5").addEventListener("click", () => setAttackMode(5));
 document.getElementById("mode10").addEventListener("click", () => setAttackMode(10));
 document.getElementById("mode30").addEventListener("click", () => setAttackMode(30));
-document.getElementById("mode50").addEventListener("click", () => setAttackMode(50));
 document.getElementById("mode100").addEventListener("click", () => setAttackMode(100));
 document.getElementById("mode500").addEventListener("click", () => setAttackMode(500));
 document.getElementById("mode1000").addEventListener("click", () => setAttackMode(1000));
 
-// Sélecteur de difficulté
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
 btn.addEventListener('click', function() {
 setDifficulty(this.getAttribute('data-difficulty'));
 });
 });
 
-// Raccourcis clavier
+closePopupBtn.addEventListener('click', closeVictoryPopup);
+
+victoryPopup.addEventListener('click', function(e) {
+if (e.target === this) {
+closeVictoryPopup();
+}
+});
+
 document.addEventListener('keydown', (e) => {
 if (isAttacking) return;
 
@@ -1228,24 +1333,18 @@ case '1':
 setAttackMode(1);
 break;
 case '2':
-setAttackMode(5);
-break;
-case '3':
 setAttackMode(10);
 break;
-case '4':
+case '3':
 setAttackMode(30);
 break;
-case '5':
-setAttackMode(50);
-break;
-case '6':
+case '4':
 setAttackMode(100);
 break;
-case '7':
+case '5':
 setAttackMode(500);
 break;
-case '8':
+case '6':
 setAttackMode(1000);
 break;
 case 'r':
@@ -1272,10 +1371,12 @@ case 'd':
 case 'D':
 setDifficulty('hard');
 break;
+case 'Escape':
+closeVictoryPopup();
+break;
 }
 });
 
-// Reset combo après inactivité
 setInterval(() => {
 const currentTime = Date.now();
 if (currentTime - lastHitTime > 3000 && combo > 0) {
