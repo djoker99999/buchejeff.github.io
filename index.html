@@ -451,6 +451,14 @@ background: linear-gradient(45deg, #555, #777);
 background: linear-gradient(45deg, #777, #999);
 }
 
+#doubleHPBtn {
+background: linear-gradient(45deg, #9C27B0, #E91E63);
+}
+
+#doubleHPBtn:hover {
+background: linear-gradient(45deg, #E91E63, #FF4081);
+}
+
 #message {
 margin: 15px 0;
 font-size: 1.1em;
@@ -860,6 +868,7 @@ background: linear-gradient(45deg, #F44336, #E91E63);
 <div class="controls">
 <button id="attackBtn">Attaquer (1 coup)</button>
 <button id="resetBtn">Nouvelle Bûche</button>
+<button id="doubleHPBtn">👻 Mode Guest</button>
 </div>
 
 <p id="message"></p>
@@ -885,10 +894,13 @@ let lastHitTime = 0;
 let isAttacking = false;
 let audioContext = null;
 let currentDifficulty = "noob";
+let totalCoins = 0;
+let totalLogsDestroyed = 0;
 
 const log = document.getElementById("log");
 const message = document.getElementById("message");
 const attackBtn = document.getElementById("attackBtn");
+const doubleHPBtn = document.getElementById("doubleHPBtn");
 const gameContainer = document.getElementById("gameContainer");
 const comboIndicator = document.getElementById("comboIndicator");
 const particlesContainer = document.getElementById("particlesContainer");
@@ -900,6 +912,48 @@ const popupVictoryMessage = document.getElementById("popupVictoryMessage");
 const closePopupBtn = document.getElementById("closePopupBtn");
 
 const impactEffects = ["💥", "🔥", "⭐", "💫", "✨", "💢", "🪓", "🌲"];
+
+function saveGame() {
+const gameData = {
+totalCoins: totalCoins,
+totalLogsDestroyed: totalLogsDestroyed,
+currentDifficulty: currentDifficulty,
+attackMode: attackMode,
+currentHP: currentHP,
+maxHP: maxHP,
+coupCounter: coupCounter,
+totalHits: totalHits,
+coinsEarnedThisLog: coinsEarnedThisLog
+};
+localStorage.setItem('bucheMagiqueData', JSON.stringify(gameData));
+}
+
+function loadGame() {
+const savedData = localStorage.getItem('bucheMagiqueData');
+if (savedData) {
+try {
+const gameData = JSON.parse(savedData);
+totalCoins = gameData.totalCoins || 0;
+totalLogsDestroyed = gameData.totalLogsDestroyed || 0;
+if (gameData.currentDifficulty) {
+currentDifficulty = gameData.currentDifficulty;
+}
+if (gameData.attackMode) {
+attackMode = gameData.attackMode;
+setAttackMode(attackMode);
+}
+if (gameData.currentHP && gameData.maxHP) {
+currentHP = gameData.currentHP;
+maxHP = gameData.maxHP;
+coupCounter = gameData.coupCounter || 0;
+totalHits = gameData.totalHits || 0;
+coinsEarnedThisLog = gameData.coinsEarnedThisLog || 0;
+}
+} catch (e) {
+console.error("Erreur lors du chargement:", e);
+}
+}
+}
 
 function initAudioContext() {
 try {
@@ -1107,6 +1161,7 @@ showCoinGain(coinsEarned);
 }
 
 updateUI();
+saveGame();
 
 if (!wasCracked && log.classList.contains('cracked')) {
 playCrackSound();
@@ -1218,6 +1273,10 @@ playBreakSound();
 
 message.textContent = "💥 Félicitations ! Tu as coupé la bûche magique ! 🪓✨";
 
+totalCoins += coinsEarnedThisLog;
+totalLogsDestroyed++;
+saveGame();
+
 setTimeout(() => {
 showVictoryPopup();
 }, 500);
@@ -1249,6 +1308,29 @@ document.querySelector(`.difficulty-btn.${difficulty}`).classList.add('active');
 log.className = "log " + difficulty;
 
 initGame();
+}
+
+function doubleLogHP() {
+if (currentHP <= 0) return;
+
+const previousMaxHP = maxHP;
+maxHP = maxHP * 2;
+currentHP = currentHP * 2;
+
+createImpactEffect();
+
+const notification = document.createElement('div');
+notification.className = 'coins-display';
+notification.textContent = '👻 MODE GUEST ACTIVÉ !';
+notification.style.background = 'linear-gradient(45deg, #9C27B0, #E91E63)';
+log.parentElement.appendChild(notification);
+
+setTimeout(() => {
+notification.remove();
+}, 1500);
+
+updateUI();
+saveGame();
 }
 
 function initGame() {
@@ -1294,10 +1376,12 @@ message.textContent = `Bûche magique ${difficultyName} - À tout moment la bûc
 
 closeVictoryPopup();
 comboIndicator.style.display = "none";
+saveGame();
 }
 
 document.getElementById("attackBtn").addEventListener("click", attack);
 document.getElementById("resetBtn").addEventListener("click", initGame);
+document.getElementById("doubleHPBtn").addEventListener("click", doubleLogHP);
 
 document.getElementById("mode1").addEventListener("click", () => setAttackMode(1));
 document.getElementById("mode10").addEventListener("click", () => setAttackMode(10));
@@ -1385,6 +1469,7 @@ comboIndicator.style.display = "none";
 }
 }, 1000);
 
+loadGame();
 initGame();
 </script>
 </body>
